@@ -1,0 +1,81 @@
+@mixin tooltip {
+  content: attr(data-title);
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  z-index: 10;
+
+  border: 1px solid #000;
+  width: fit-content;
+  padding: 3px;
+  visibility: hidden;
+
+  color: #000;
+  font-size: 0.7em;
+
+  background-color: #fff;
+  opacity: 0;
+  transition: opacity 0.1s ease;
+}
+
+.table {
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+
+  .cell {
+    padding: 5px;
+    border: 1px solid #000;
+
+    &[data-title] {
+      position: relative;
+
+      &::after {
+        @include tooltip;
+      }
+
+      &:hover::after {
+        visibility: visible;
+
+        opacity: 1;
+        transition: opacity 0.1s ease 2s;
+      }
+
+      @media (pointer: coarse) {
+        &:hover::after,
+        &:focus::after {
+          visibility: visible;
+
+          opacity: 1;
+          transition: opacity 0.1s ease;
+        }
+      }
+    }
+  }
+
+  .cellContent {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .nameCell,
+  .surnameCell,
+  .emailCell {
+    min-width: 100px;
+    width: 33%;
+    max-width: 0;
+  }
+
+  .numberCell,
+  .buttonsCell {
+    width: min-content;
+
+    white-space: nowrap;
+    text-align: center;
+  }
+}
